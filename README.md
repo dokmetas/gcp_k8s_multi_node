@@ -1,7 +1,7 @@
 # Terraform on Google Cloud
 Terraform code to create control plane and worker nodes for k8s.
 
-## Orchastration
+## Orchestration
 
 ```
 export TF_VAR_project=[PROJECT]
