@@ -1,0 +1,53 @@
+---    
+# Setup the container networking provider and the network policy engine
+  - name: Download calico yml
+    get_url:
+      url: https://docs.projectcalico.org/manifests/calico.yaml
+      dest: ~/
+
+  - name: Generate a default kubeadm init config file
+    shell : kubeadm config print init-defaults | tee ClusterConfiguration.yaml
+
+  - 
+  - name: Update the address of the localAPIEndpoint.advertiseAddress to the Control Plane Node IP
+    lineinfile:
+      path: ClusterConfiguration.yaml
+      regexp: 'advertiseAddress: 1.2.3.4'
+      line: '  advertiseAddress: {{ ansible_all_ipv4_addresses[0] }}'
+
+  - name: Set the CRI Socket to point to containerd
+    lineinfile:
+      path: ClusterConfiguration.yaml
+      regexp: 'criSocket: /var/run/dockershim.sock'
+      line: '  criSocket: /run/containerd/containerd.sock'
+  
+  - name: Set the cgroupDriver to systemd
+    blockinfile:
+      dest: ClusterConfiguration.yaml
+      block: |
+        ---
+        apiVersion: kubelet.config.k8s.io/v1beta1
+        kind: KubeletConfiguration
+        cgroupDriver: systemd
+
+  - name: Update k8s version
+    lineinfile:
+      path: ClusterConfiguration.yaml
+      regexp: 'kubernetesVersion: v1.20.0'
+      line: "kubernetesVersion: {{ k8s_version_cluster_config }}"
+
+  - name: add CRI socket
+    become: true
+    command: kubeadm init --config=ClusterConfiguration.yaml --cri-socket /run/containerd/containerd.sock
+
+  - name: enable admin access to the API server from a non-privileged account:1
+    command: mkdir -p $HOME/.kube
+
+  - name: enable admin access to the API server from a non-privileged account:2
+    shell: "{{ item }}"
+    with_items:
+      - sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      - sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: Create a pod network
+    command: kubectl apply -f calico.yaml

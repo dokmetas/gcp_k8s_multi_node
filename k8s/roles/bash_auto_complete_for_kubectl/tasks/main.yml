@@ -1,0 +1,15 @@
+---
+  - name: install containerd
+    become: true
+    apt: 
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - bash-completion
+
+  - name: line 12
+    shell: "{{ item }}"
+    with_items:
+      - echo "source <(kubectl completion bash)" >> ~/.bashrc

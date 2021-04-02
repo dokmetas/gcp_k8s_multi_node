@@ -1,0 +1,7 @@
+---
+- name: base playbook for node
+  hosts: workers
+  roles:
+    - swap_off
+    - containerd
+    - install_k8s_binaries

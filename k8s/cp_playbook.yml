@@ -1,0 +1,9 @@
+---
+- name: base playbook for installing control plane(s)
+  hosts: cp
+  roles:
+    - swap_off
+    - containerd
+    - install_k8s_binaries
+    - setup_networking_provider_and_policy_engine
+    - bash_auto_complete_for_kubectl
