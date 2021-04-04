@@ -1,5 +1,5 @@
 ---
-  - name: install containerd
+  - name: Install bash-completion
     become: true
     apt: 
       name: "{{ packages }}"
@@ -9,7 +9,7 @@
       packages:
       - bash-completion
 
-  - name: line 12
+  - name: Make the bash-completion persistent
     shell: "{{ item }}"
     with_items:
       - echo "source <(kubectl completion bash)" >> ~/.bashrc

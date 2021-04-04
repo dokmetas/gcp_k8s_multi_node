@@ -1,18 +1,18 @@
-  - name: containerd prerequisites
+  - name: Load the overlay and the br_netfilter modules.
     become: true
     command: "{{ item }}"
     with_items:
      - modprobe overlay
      - modprobe br_netfilter
   
-  - name: containerd
+  - name: Create containerd config
     shell: |
       cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
       overlay 
       br_netfilter 
       EOF
 
-  - name: Setup required sysctl params, these persist across reboots
+  - name: Enable IP forwarding and netfilter settings, these persist across reboots
     shell: |
       cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
       net.bridge.bridge-nf-call-iptables  = 1
@@ -20,11 +20,11 @@
       net.bridge.bridge-nf-call-ip6tables = 1
       EOF
 
-  - name: Apply sysctl params without reboot
+  - name: Apply the config file
     become: true
     command: sysctl --system
 
-  - name: install containerd
+  - name: Install containerd
     become: true
     apt: 
       name: "{{ packages }}"
@@ -51,6 +51,6 @@
       - '          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]'
       - '           SystemdCgroup = true'
 
-  - name: restart containerd
+  - name: Restart containerd
     become: true
     command: systemctl restart containerd

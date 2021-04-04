@@ -15,7 +15,7 @@ resource "google_compute_instance" "control_plane" {
    }
  }
 
- metadata_startup_script = "sudo apt-get update;"
+ metadata_startup_script = "sudo apt-get update; sudo apt-get upgrade -y;"
 
  network_interface {
    network = "default"
@@ -43,7 +43,7 @@ resource "google_compute_instance" "node" {
    }
  }
 
- metadata_startup_script = "sudo apt-get update;"
+ metadata_startup_script = "sudo apt-get update; sudo apt-get upgrade -y;"
 
  network_interface {
    network = "default"

@@ -1,11 +1,11 @@
 ---
-  - name: Add an apt signing key for Kubernetes
+  - name: Add gpg key for Kubernetes
     become: true
     apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
 
-  - name: Adding apt repository for Kubernetes
+  - name: Adding apt repo for Kubernetes
     become: true
     apt_repository:
       repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
@@ -23,7 +23,7 @@
         - kubeadm={{ k8s_version }}
         - kubectl={{ k8s_version }}
   
-  - name: Prevent kubelet, kubeadm, kubectl containerd
+  - name: Prevent kubelet, kubeadm, kubectl containerd updates
     become: true
     dpkg_selections:
       name: "{{ item }}"
@@ -34,7 +34,7 @@
     - kubectl 
     - containerd
 
-  - name: enable kubelet, containerd
+  - name: Enable kubelet, containerd
     become: true
     command: "{{ item }}"
     with_items:

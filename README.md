@@ -1,5 +1,5 @@
 # Terraform on Google Cloud
-Terraform code to create control plane and worker nodes for k8s.
+Terraform code to create control plane and worker nodes for k8s using kubeadm.
 
 ## Orchestration
 

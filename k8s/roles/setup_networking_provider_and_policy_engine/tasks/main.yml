@@ -1,6 +1,5 @@
 ---    
-# Setup the container networking provider and the network policy engine
-  - name: Download calico yml
+  - name: Download a cni plugin
     get_url:
       url: https://docs.projectcalico.org/manifests/calico.yaml
       dest: ~/
@@ -36,14 +35,14 @@
       regexp: 'kubernetesVersion: v1.20.0'
       line: "kubernetesVersion: {{ k8s_version_cluster_config }}"
 
-  - name: add CRI socket
+  - name: Add CRI socket
     become: true
     command: kubeadm init --config=ClusterConfiguration.yaml --cri-socket /run/containerd/containerd.sock
 
-  - name: enable admin access to the API server from a non-privileged account:1
+  - name: Enable admin access to the API server from a non-privileged account:1
     command: mkdir -p $HOME/.kube
 
-  - name: enable admin access to the API server from a non-privileged account:2
+  - name: Enable admin access to the API server from a non-privileged account:2
     shell: "{{ item }}"
     with_items:
       - sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
