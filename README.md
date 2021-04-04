@@ -1,7 +1,7 @@
 # Terraform on Google Cloud
 Terraform code to create control plane and worker nodes for k8s using kubeadm.
 
-## Orchestration
+## Create CP and Worker node VMs
 
 ```
 export TF_VAR_project=[PROJECT]
@@ -12,10 +12,10 @@ export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
 terraform apply
 ```
 
-## Provisioning
+## Install K8s
 ```
 cd k8s
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts cp-playbook.yml
-ansible-playbook -i hosts worker-playbook.yml
+ansible-playbook -i hosts cp_playbook.yml
+ansible-playbook -i hosts worker_playbook.yml
 ```
