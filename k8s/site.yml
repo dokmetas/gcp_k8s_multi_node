@@ -1,0 +1,3 @@
+---
+- import_playbook: cp_playbook.yml
+- import_playbook: worker_playbook.yml

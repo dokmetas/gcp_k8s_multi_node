@@ -16,6 +16,5 @@ terraform apply
 ```
 cd k8s
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts cp_playbook.yml
-ansible-playbook -i hosts worker_playbook.yml
+ansible-playbook -i hosts site.yml
 ```
