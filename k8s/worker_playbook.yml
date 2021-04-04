@@ -5,3 +5,4 @@
     - swap_off
     - containerd
     - install_k8s_binaries
+    - workers_join_to_the_cluster
