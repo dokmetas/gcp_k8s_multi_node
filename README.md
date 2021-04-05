@@ -1,5 +1,6 @@
-# Terraform on Google Cloud
-Terraform code to create control plane and worker nodes for k8s using kubeadm.
+# Setup k8s cluster @ Google Cloud
+Terraform code to create control plane and worker nodes for k8s.
+Ansible playbooks are utilized to install and configure k8s cluster using kubeadm.
 
 ## Create CP and Worker node VMs
 
